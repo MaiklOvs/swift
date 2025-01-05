@@ -1,0 +1,71 @@
+//
+//  main.swift
+//  Unknown Number
+//
+//  Created by Mikhail Ovsyannikov on 05.01.2025.
+//
+
+import Foundation
+
+// Функция для проверки корректности ввода числа
+func validateNumber(message: String) -> UInt8 {
+    while true {
+        print(message)
+        guard let input = readLine(), let userNumber = UInt8(input) else {
+            print("Вы ввели некорректное число, попробуйте снова")
+            continue
+        }
+        return userNumber
+    }
+}
+
+
+// Функция для определения, хочет ли пользователь повторить игру
+func shouldRepeatGame() -> Bool {
+  while true {
+    print("Хотите сыграть еще раз? Да/Нет")
+    guard let isRepeat = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() else {
+        print("Вы ввели невалидный ответ. Попробуйте еще раз.")
+        continue
+    }
+    
+    switch isRepeat {
+    case "да":
+        return true
+    case "нет":
+        return false
+    default:
+        print("Вы ввели невалидный ответ. Попробуйте еще раз.")
+    }
+  }
+}
+
+// Функция игры
+func playGame() {
+    let randomNumber = UInt8.random(in: 1...250)
+    print("Компьютер случайным образом загадал число. Вам требуется отгадать его.")
+    while true {
+      
+      let inputNumber = validateNumber(message: "Введите ваш вариант и нажмите Enter")
+      
+      if inputNumber == randomNumber {
+        print("Вы угадали!")
+        if shouldRepeatGame() {
+           break
+        } else {
+           return
+        }
+        
+      } else if inputNumber < randomNumber {
+        print("Ваш вариант меньше загаданного числа")
+      } else {
+        print("Ваш вариант больше загаданного числа")
+      }
+    }
+}
+// Основной цикл игры
+var isRepeatGame = true
+while isRepeatGame {
+    playGame()
+   isRepeatGame = shouldRepeatGame()
+}
